@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  roguesquadron:
+    container_name: roguesquadron
+    depends_on:
+      - roguesquadron_database
+    build:
+      context: .
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://roguesquadron_database:3306/mydb?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2
+      SPRING_DATASOURCE_USERNAME: lauric
+      SPRING_DATASOURCE_PASSWORD: Campus06
+    networks:
+      - rogue-net
+      - death-star-net
+
+  roguesquadron_database:
+    image: mysql:5.7
+    container_name: roguesquadron_database
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: lauric
+      MYSQL_PASSWORD: Campus06
+      MYSQL_ROOT_PASSWORD: Campus06
+    volumes:
+      - dbstorage:/var/lib/mysql
+    networks:
+      - rogue-net
+    ports:
+      - "3307:3306"
+
+volumes:
+  dbstorage:
+networks:
+  rogue-net:
+  death-star-net:
+    external: true
+
+
