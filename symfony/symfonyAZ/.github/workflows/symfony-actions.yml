@@ -1,0 +1,28 @@
+name: CI/CD process for Symfony
+on: [ push, pull_request ]
+jobs:
+  symfony:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        php: [ '8.0' ]
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.18.0
+        with:
+          php-version: ${{ matrix.php }}
+          tools: symfony-cli, phpunit
+
+      - uses: actions/checkout@v2
+
+      - name: Composer Install
+        run: composer install --ansi --prefer-dist --no-interaction --no-progress
+
+      - name: Start docker
+        run: docker-compose up -d
+
+      - name: Start Symfony
+        run: symfony serve -d
+
+      - name: Run tests
+        run: php bin/phpunit
