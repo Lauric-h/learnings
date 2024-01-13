@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  rebels:
+    container_name: rebels
+    depends_on:
+      - rebels_database
+    build:
+      context: .
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://rebels_database:3306/mydb?autoReconnect=true&useSSL=false&enabledTLSProtocols=TLSv1.2
+      SPRING_DATASOURCE_USERNAME: lauric
+      SPRING_DATASOURCE_PASSWORD: Campus06
+    networks:
+      - rebels-net
+      - death-star-net
+
+  rebels_database:
+    image: mysql:5.7
+    container_name: rebels_database
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: lauric
+      MYSQL_PASSWORD: Campus06
+      MYSQL_ROOT_PASSWORD: Campus06
+    volumes:
+      - dbstorage:/var/lib/mysql
+    networks:
+      - rebels-net
+#    ports:
+#      - "3308:3306"
+
+volumes:
+  dbstorage:
+networks:
+  rebels-net:
+  death-star-net:
+    external: true

@@ -1,0 +1,27 @@
+# To do
+- [X] Cacher les quacks soft deleted du panel admin
+- [X] Personnaliser admin
+- [X] Enlever le "edit" action de l'admin
+- [X] Enlever le add quack et add duck
+- [X] Cacher les ducks soft deleted /show/:id
+- [X] Ajouter view Duck banni  
+- [X] Voir les commentaires associés quand on va sur /quack/show/:id 
+- [X] Modifier le delete quack d'un user en soft delete
+- [X] API : vérifier les data de register
+- [X] Garder user connecté api/whoami
+- [X] Update api
+- [X] /api accessible sans login
+- [X] protéger route like/dislike // env var
+- [X] pour deny access sur edit fonctionne pas
+- [] Faire recherche sur les tags api (sérialisation)
+- [] Ajout photo profil 
+- [] Ajout photo quack 
+- [] cacher barre de recherche sur /login et /register => réorganiser templates twig
+- [] prévisualisation liens
+- [] notification / mercure
+- [] ES/Docker
+    - [X] postPersist > envoi à ES
+    - [X] BeforeRemove > remove ES
+    - [X] Après update > envoi à ES
+    - [] Barre de recherche ES
+    - [] Dockerfile / docker compose

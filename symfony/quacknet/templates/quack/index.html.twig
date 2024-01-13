@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quack index{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+
+    {% else %}
+        <a href="{{ path('app_login') }}">Se connecter</a>
+        <a href="{{ path('app_register') }}">S'enregistrer'</a>
+    {% endif %}
+    <h1>Quack index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th>Created_at</th>
+                <th>actions</th>
+                <th>author</th>
+                <th>tags</th>
+                <th>Commentaires</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for quack in quacks %}
+            <tr>
+                <td>{{ quack.id }}</td>
+                <td>{{ quack.content|auto_link|markdown }}</td>
+                <td>{{ quack.createdAt ? quack.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {% if app.user %}
+                      {% if quack.duck is same as (app.user) or (quack.parent and quack.parent.duck is same as (app.user))%}
+                            <form method="post" action="{{ path('quack_delete', {'id': quack.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ quack.id) }}">
+                                <button class="btn">Delete</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td> <a href="{{ path('show_duck', {id: quack.duck.id}) }}">{{ quack.duck.username }}</a></td>
+                <td>
+                    {% for tag in quack.tags  %}
+                        {{ tag }}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('quack_comment', {id: quack.id}) }}">Ajouter un commentaire</a>
+                </td>
+                <td>
+                    <p>likes {{ quack.positive }}</p>
+                    <a href="{{ path('quack_like', {'id': quack.id }) }}">like</a>
+                </td>
+                <td>
+                    <p>dislikes {{ quack.negative }}</p>
+                    <a href="{{ path('quack_dislike', {'id': quack.id }) }}">dislike</a>
+                </td>
+                <td>
+                    {% if quack.duck is same as (app.user)  %}
+                        <a href="{{ path('quack_edit', {id: quack.id}) }}">Edit</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <a href="{{ path('quack_new') }}">Create new</a>
+{% endblock %}
