@@ -1,0 +1,10 @@
+warriors.client.console
+warriors.contracts
+warriors.db
+warriors.engine
+warriors.engine.board
+warriors.engine.game
+warriors.engine.heroes
+warriors.engine.heroes.adventurers
+warriors.engine.heroes.monsters
+warriors.engine.items
