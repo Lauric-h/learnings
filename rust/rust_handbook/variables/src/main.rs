@@ -38,6 +38,5 @@ fn main() {
     let arr1: [i32; 5] = [1, 2, 3, 4, 5];
     // Access:
     let first = arr1[0];
-
-    // Functions
 }
+
