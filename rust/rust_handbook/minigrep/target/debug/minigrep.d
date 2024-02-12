@@ -1,0 +1,1 @@
+/Users/LAURIC/dev/perso/learnings/rust/rust_handbook/minigrep/target/debug/minigrep: /Users/LAURIC/dev/perso/learnings/rust/rust_handbook/minigrep/src/lib.rs /Users/LAURIC/dev/perso/learnings/rust/rust_handbook/minigrep/src/main.rs
