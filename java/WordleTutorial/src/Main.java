@@ -1,3 +1,10 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -5,9 +12,12 @@ import java.util.Scanner;
 public class Main {
 
     private static final String WORD = "LYMPH";
-    private static final String[] DICTIONARY = {"CRATE", "USING", "LYMPH", "LUMPS"};
+    private static List<String> DICTIONARY;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        DICTIONARY = Files.readAllLines(new File("words.txt").toPath());
+        DICTIONARY = DICTIONARY.stream().map(String::toUpperCase).toList();
+
         System.out.println("Write a guess");
         Scanner scanner = new Scanner(System.in);
         int attempts = 0;
@@ -23,7 +33,7 @@ public class Main {
                 System.out.println("Success");
                 return;
             }
-            if (!isInDictionary(line)) {
+            if (!DICTIONARY.contains(line)) {
                 System.out.println("That is not a valid guess");
             } else {
                 attempts++;
@@ -50,14 +60,5 @@ public class Main {
             System.out.print("B"); // Black
         }
         System.out.println();
-    }
-
-    private static boolean isInDictionary(String word) {
-        for (String current : DICTIONARY) {
-            if (current.equals(word)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
