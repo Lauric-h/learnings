@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +10,17 @@ public class Main {
 
     private static final String WORD = "LYMPH";
     private static List<String> DICTIONARY;
+    private static List<String> words;
 
     public static void main(String[] args) throws IOException {
+        File statusFile = new File("state.txt");
+        List<String> status;
+        if (statusFile.exists()) {
+            status = Files.readAllLines(statusFile.toPath());
+        } else {
+            status = Collections.emptyList();
+        }
+
         DICTIONARY = Files.readAllLines(new File("words.txt").toPath());
         DICTIONARY = DICTIONARY.stream().map(String::toUpperCase).toList();
 
@@ -31,19 +37,31 @@ public class Main {
 
             if (line.equals(WORD)) {
                 System.out.println("Success");
-                return;
+                words.add(line);
+                finishGame();
             }
             if (!DICTIONARY.contains(line)) {
                 System.out.println("That is not a valid guess");
             } else {
+                words.add(line);
                 attempts++;
                 printWordResult(line);
                 if (attempts > 7) {
                     System.out.println("Game over");
-                    return;
+                    finishGame();
                 }
             }
         }
+    }
+
+    private static void finishGame() throws IOException {
+        try (Writer writer = new FileWriter("state.txt", true)) {
+            writer.write(System.currentTimeMillis() + ","
+                    + WORD + ","
+                    String.join(",", words) + "\n");
+
+        }
+        System.exit(0);
     }
 
     private static void printWordResult(String word) {
