@@ -1,6 +1,7 @@
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -57,7 +58,7 @@ public class Main {
     private static void finishGame() throws IOException {
         try (Writer writer = new FileWriter("state.txt", true)) {
             writer.write(System.currentTimeMillis() + ","
-                    + WORD + ","
+                    + WORD + "," +
                     String.join(",", words) + "\n");
 
         }
