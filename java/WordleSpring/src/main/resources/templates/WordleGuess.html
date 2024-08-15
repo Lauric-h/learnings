@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Java Wordle</title>
+</head>
+<body>
+    <style>
+        b {
+            padding: 1em;
+        }
+
+        .GREEN {
+            background: green;
+            color: white;
+        }
+        .YELLOW {
+           background: yellow;
+        }
+        .BLACK {
+            background: black;
+            color: white;
+        }
+        .error {
+            color: red;
+        }
+        ul {
+            margin-bottom: 1em;
+        }
+    </style>
+
+    <p class="error" th:text="${errorMessage}"></p>
+
+    <ul>
+        <li th:each="entry : ${entries}">
+            <b th:each="character : ${entry}"
+               th:class="${character.color}"
+               th:text="${character.letter}"
+            >
+                A
+            </b>
+        </li>
+    </ul>
+
+    <form action="#" method="post">
+        <p>Message: <input type="text" name="guess" /></p>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+</body>
+</html>
