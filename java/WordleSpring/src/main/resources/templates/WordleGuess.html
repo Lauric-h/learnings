@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -28,9 +28,12 @@
         ul {
             margin-bottom: 1em;
         }
+        li {
+            margin: 2em 0;
+        }
     </style>
 
-    <p class="error" th:text="${errorMessage}"></p>
+    <p class="error" th:text="${errorMessage}" id="error"></p>
 
     <ul>
         <li th:each="entry : ${entries}">
@@ -43,9 +46,22 @@
         </li>
     </ul>
 
-    <form action="#" method="post">
-        <p>Message: <input type="text" name="guess" /></p>
+    <form action="#" method="post" id="form">
+        <p>Message: <input type="text" id="guess" name="guess" /></p>
         <p><input type="submit" value="Submit"></p>
     </form>
+
+    <script>
+        const form = document.querySelector("#form");
+        const guessField = document.querySelector("#guess");
+        const message = document.querySelector("#error");
+
+        form.addEventListener('submit', (e) => {
+            if(guessField.value.length !== 5) {
+                message.textContent = 'Must have 5 char';
+                e.preventDefault();
+            }
+        })
+    </script>
 </body>
 </html>

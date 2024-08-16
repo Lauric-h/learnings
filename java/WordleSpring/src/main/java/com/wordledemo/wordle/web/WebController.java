@@ -20,6 +20,8 @@ public class WebController {
 
     @GetMapping("/guessMVC")
     private String guess(Model model) {
+        this.showAttempts(model);
+
         return "Wordleguess";
     }
 
@@ -33,12 +35,16 @@ public class WebController {
             attempts.add(guess);
         }
 
+        this.showAttempts(model);
+
+        return "Wordleguess";
+    }
+
+    private void showAttempts(Model model) {
         List<WebResult[]> results = attempts.stream()
                 .map(str -> WebResult.create(wordleService.calculateResults(str), str))
                 .toList();
 
         model.addAttribute("entries", results);
-
-        return "Wordleguess";
     }
 }
