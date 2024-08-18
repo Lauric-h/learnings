@@ -29,7 +29,8 @@ attempt INTEGER)
 """;
 
     private static final String INSERT_SQL = "INSERT INTO `activity` (userId, guess, word, time_stamp, attempt) VALUES (?, ?, ?, ?, ?)";
-    private static final String SELECT_ALL_SQL = "SELECT * FROM `activity`";
+    private static final String SELECT_ALL_SQL = "SELECT * FROM `activity` WHERE userId = ? ORDER BY attempt";
+    private static final String COUNT_SQL = "SELECT COUNT(userId) FROM `activity` WHERE userId = ? AND word = ?";
 
     @PostConstruct
     public void createtable() {
@@ -37,14 +38,24 @@ attempt INTEGER)
     }
 
     public void insert(DBEntry entry) {
+        int attempt  = entry.attempt();
+        if (entry.user() != null && attempt == 0) {
+            attempt = jdbcTemplate.queryForObject(
+                    Database.COUNT_SQL,
+                    Integer.class,
+                    entry.user(),
+                    entry.word()
+            );
+        }
+
         jdbcTemplate.update(
                 Database.INSERT_SQL,
-                entry.user(), entry.guess(), entry.word(), Instant.now(), entry.attempt()
+                entry.user(), entry.guess(), entry.word(), Instant.now(), attempt
         );
     }
 
-    public List<DBEntry> selectAll() {
-        return jdbcTemplate.query(Database.SELECT_ALL_SQL, new ActivityRowMapper());
+    public List<DBEntry> selectAll(String userId) {
+        return jdbcTemplate.query(Database.SELECT_ALL_SQL, new ActivityRowMapper(), userId);
     }
 
     class ActivityRowMapper implements RowMapper<DBEntry> {

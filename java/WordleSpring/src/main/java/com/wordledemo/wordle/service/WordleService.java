@@ -1,7 +1,10 @@
 package com.wordledemo.wordle.service;
 
+import com.wordledemo.wordle.db.DBEntry;
+import com.wordledemo.wordle.db.Database;
 import com.wordledemo.wordle.webservices.CharacterResult;
 import com.wordledemo.wordle.webservices.Result;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +15,12 @@ import java.util.List;
 import java.util.Scanner;
 
 @Service
+@RequiredArgsConstructor
 public class WordleService {
     private static final String WORD = "LYMPH";
     private static final List<String> DICTIONARY = new ArrayList<>();
+
+    private final Database database;
 
     static {
         try(InputStream is = new ClassPathResource("words.txt").getInputStream()) {
@@ -40,8 +46,10 @@ public class WordleService {
         return null;
     }
 
-    public CharacterResult[] calculateResults(String word) {
+    public CharacterResult[] calculateResults(String userId, String word) {
         word = word.toUpperCase();
+
+        database.insert(new DBEntry(userId, word, WORD, 0));
 
         CharacterResult[] results = new CharacterResult[WORD.length()];
         for (int iter = 0; iter < word.length(); iter++) {

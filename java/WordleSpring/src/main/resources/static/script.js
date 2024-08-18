@@ -5,6 +5,35 @@ let currentRow = 0;
 let currentColumn = 0;
 let currentGuess = '';
 
+function getCookie(name) {
+    const cookieName = name + "=";
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookies.length);
+        }
+    }
+
+    return "";
+}
+
+function createUserIdCookie() {
+    const userIdCookieCookieName = "userId";
+    let userId = getCookie(userIdCookieCookieName);
+
+    if (!userId) {
+        userId = uuidv4();
+        const date = new Date();
+        date.setTime(date.getTime() + (3600 * 24 * 60 * 60 * 1000));
+        const expires = `expires=${date.toUTCString()}`;
+        document.cookie = `${userIdCookieCookieName}=${userId};${expires};path=/`;
+    }
+    return userId;
+}
+
+const userId = createUserIdCookie();
+
 function generateBoard() {
     for (let row = 0; row < maxAttempts; row++) {
         const rowElement = document.createElement("div");
