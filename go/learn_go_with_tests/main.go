@@ -1,11 +1,12 @@
 package main
 
 import (
-	"learn_go_with_tests/dependency_injection"
-	"log"
-	"net/http"
+	"learn_go_with_tests/mocking"
+	"os"
+	"time"
 )
 
 func main() {
-	log.Fatal(http.ListenAndServe(":5001", http.HandlerFunc(dependency_injection.MyGreeterHandler)))
+	sleeper := &mocking.ConfigurableSleeper{1 * time.Second, time.Sleep}
+	mocking.Countdown(os.Stdout, sleeper)
 }
